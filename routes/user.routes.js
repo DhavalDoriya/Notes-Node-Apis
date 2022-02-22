@@ -112,11 +112,21 @@ router.get('/:id', async (req, res) => {
 })
 
 //delete user by ID
-router.delete('/:id', async (req, res) => {
+router.delete('/:id',auth, async (req, res) => {
     let checkuser = await user.findByIdAndDelete({ _id: req.params.id })
-    if (checkuser) {
-        return res.status(201).json({ massage: "deleted" });
+
+    try {
+        if (checkuser) {
+            return res.status(201).json({ massage: "deleted" });
+        }else{
+            return res.status(400).json({error: "error"})
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error)
+        
     }
+   
 })
 
 //get user jwt by id
