@@ -5,6 +5,8 @@ const user = require('../models/User')
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const JWT_SECRET = "jbdksvjnasclncsn"
+const auth = require('../middleware/jwt')
+
 
 //create new user with validtion and check exiesting user
 router.post('/', [
@@ -114,6 +116,19 @@ router.delete('/:id', async (req, res) => {
     let checkuser = await user.findByIdAndDelete({ _id: req.params.id })
     if (checkuser) {
         return res.status(201).json({ massage: "deleted" });
+    }
+})
+
+//get user jwt by id
+router.post('/jwt', auth, async (req, res) => {
+    try {
+        userid = req.user.id;
+        let checkuser = await user.find(userid).select("-password")
+        res.status(200).json(checkuser)
+    } catch (error) {
+        console.log(error);
+        res.status(500).send(error)
+
     }
 })
 
