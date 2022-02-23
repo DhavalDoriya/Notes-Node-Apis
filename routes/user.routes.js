@@ -81,15 +81,13 @@ router.post('/login', [
 })
 
 //serach user
-router.get('/search/:key', async (req, res) => {
+router.post('/search/:key', async (req, res) => {
     let data = await user.find(
         {
             "$or": [
                 { name: { $regex: req.params.key } }
-                // ,{ category: { $regex: req.params.key } }
-
             ]
-        });
+        }).select("-password");
     res.send(data);
 })
 
@@ -112,21 +110,21 @@ router.get('/:id', async (req, res) => {
 })
 
 //delete user by ID
-router.delete('/:id',auth, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     let checkuser = await user.findByIdAndDelete({ _id: req.params.id })
 
     try {
         if (checkuser) {
             return res.status(201).json({ massage: "deleted" });
-        }else{
-            return res.status(400).json({error: "error"})
+        } else {
+            return res.status(400).json({ error: "error" })
         }
     } catch (error) {
         console.log(error);
         res.status(500).send(error)
-        
+
     }
-   
+
 })
 
 //get user jwt by id
