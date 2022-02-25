@@ -11,8 +11,8 @@ const NotesSchema = new mongoose.Schema({
     }, 
     description: {
         type:String,
-        require:true,
-        unique:true
+        require:true
+        
     }, 
     tag:{
         type:String,
