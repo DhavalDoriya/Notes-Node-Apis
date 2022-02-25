@@ -13,6 +13,8 @@ app.use('/api/notes',require('./routes/notes.routes.js'))
 app.use('/api/user',require('./routes/user.routes.js'))
 
 
+
+
 app.listen(appPort, () => {
     console.log(`server running on  http://127.0.0.1:${appPort}`);
   });
